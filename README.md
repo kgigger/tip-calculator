@@ -12,6 +12,8 @@ Also made it work offline because restaurant cell service is terrible, though ho
 
 Side note: The whole tipping system is broken. Just pay people a living wage and price it into the food. But until that happens, here we are, teaching our kids to calculate percentages on top of inflated prices. At least they're learning math, right?
 
+This was an app build with Claude Code to test out new web Claude Code from my iPhone. Pretty cool! Have at it.
+
 ## Features
 
 **Auto-calculate** - Results update as you type. No submit button nonsense.  
