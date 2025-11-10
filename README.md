@@ -4,7 +4,13 @@ A clean, minimal tip calculator that actually works when you need it. Built this
 
 ## Why I built this
 
-Ever notice how restaurant cell service is basically nonexistent? Like they're all built inside Faraday cages or something. I got tired of doing tip math on napkins (and being wrong half the time), so I built a calculator that works offline. Once you load it once, it's yours forever. No internet required.
+Look, I can do tip math in my head (usually), but watching my kids pull out their phones to calculate 20% of $40 made me realize we've got a problem. They know how to use a calculator but not why the math works. So I built this as a teaching tool that happens to be a calculator.
+
+The "Learn Math" feature shows the actual calculations step by step. Now when we're out to dinner, the kids can see that 20% is just moving the decimal and doubling it. Or that 15% is 10% plus half of that. Basic stuff, but apparently not that basic anymore.
+
+Also made it work offline because restaurant cell service is terrible, though honestly that might be intentional. Gives families a reason to actually talk to each other.
+
+Side note: The whole tipping system is broken. Just pay people a living wage and price it into the food. But until that happens, here we are, teaching our kids to calculate percentages on top of inflated prices. At least they're learning math, right?
 
 ## Features
 
