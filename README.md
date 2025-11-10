@@ -1,101 +1,111 @@
-# 💰 Tip Calculator PWA
+# Tip calculator PWA
 
-A clean, minimal tip calculator designed for iPhone with offline support. Works perfectly even without cell service!
+A clean, minimal tip calculator that actually works when you need it. Built this because my phone always loses service right when the check arrives. 
+
+## Why I built this
+
+Ever notice how restaurant cell service is basically nonexistent? Like they're all built inside Faraday cages or something. I got tired of doing tip math on napkins (and being wrong half the time), so I built a calculator that works offline. Once you load it once, it's yours forever. No internet required.
 
 ## Features
 
-✨ **Auto-Calculate** - Results update as you type  
-📱 **iPhone Optimized** - Large touch targets, perfect for one-handed use  
-🌙 **Dark Mode** - Easy on the eyes in restaurants  
-📴 **Offline Support** - Works without internet after first visit  
-🏠 **PWA** - Install to home screen like a native app  
-🧮 **Learn Mode** - Expandable math breakdowns to improve mental math  
-💯 **Multiple Tips** - Shows 10%, 15%, 18%, 20% simultaneously  
-✏️ **Custom Tip** - Optional field for any percentage  
-👥 **Bill Splitting** - Automatic per-person calculation  
+**Auto-calculate** - Results update as you type. No submit button nonsense.  
+**iPhone optimized** - Big buttons for when you're holding a beer in the other hand  
+**Dark mode** - Because squinting at your phone in a dim restaurant is the worst  
+**Works offline** - Service Worker magic means it works in the cell phone dead zone  
+**Install to home screen** - Looks and feels like a real app (because it basically is)  
+**Learn mode** - Shows the actual math so you can get better at this stuff  
+**Multiple tips at once** - Shows 10%, 15%, 18%, 20% all at the same time  
+**Custom tip** - For when you want to leave exactly 17.5% for some reason  
+**Bill splitting** - Calculates per-person automatically (no more "I'll Venmo you")  
 
 ## Deploying to Vercel
 
-### Option 1: Deploy via Vercel CLI (Recommended)
+Three ways to ship this thing. Pick whatever feels right.
 
-1. Install Vercel CLI:
+### Option 1: Deploy via Vercel CLI (what I usually do)
+
+Install the Vercel CLI if you haven't already:
 ```bash
 npm install -g vercel
 ```
 
-2. Navigate to the project folder:
+Navigate to the project folder:
 ```bash
 cd tip-calculator
 ```
 
-3. Deploy:
+Deploy it:
 ```bash
 vercel
 ```
 
-4. Follow the prompts - it will guide you through the setup
+Follow the prompts. Vercel's pretty smart about figuring out what you're trying to do.
 
-### Option 2: Deploy via Vercel Dashboard
+### Option 2: Deploy via Vercel dashboard
 
-1. Go to [vercel.com](https://vercel.com)
+1. Head to [vercel.com](https://vercel.com)
 2. Click "Add New Project"
-3. Import your Git repository (or drag & drop the folder)
-4. Vercel will auto-detect the settings
-5. Click "Deploy"
+3. Import your Git repository (or just drag the folder in like it's 1999)
+4. Vercel will figure out the settings
+5. Click "Deploy" and you're done
 
-### Option 3: One-Click Deploy
+### Option 3: One-click deploy
 
-Click this button to deploy instantly:
+If you're feeling lucky:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=YOUR_REPO_URL)
 
 ## Installing as PWA on iPhone
 
-1. Open the deployed URL in Safari
-2. Tap the Share button (square with arrow)
+This is the cool part. You can install this like a real app:
+
+1. Open your deployed URL in Safari (has to be Safari, not Chrome)
+2. Tap the Share button (the square with the arrow pointing up)
 3. Scroll down and tap "Add to Home Screen"
-4. Name it "Tip Calc" (or whatever you prefer)
+4. Name it something short like "Tip Calc"
 5. Tap "Add"
 
-Now you have a native-like app that works offline! 🎉
+Boom. You now have an app that works anywhere, even in that restaurant basement with zero bars of signal.
 
-## Usage
+## How to actually use it
 
-1. **Enter Bill Amount** - Type in your pre-tax bill
-2. **Set Number of People** - Defaults to 1, increase if splitting
-3. **View Results** - See 10%, 15%, 18%, 20% tips instantly
-4. **Learn Math** - Tap "Learn Math" on any card to see the breakdown
-5. **Custom Tip** - (Optional) Enter a custom percentage if needed
-6. **Dark Mode** - Tap the sun/moon button at the bottom
+1. **Enter your bill** - Just the pre-tax amount
+2. **Set number of people** - Defaults to 1, bump it up if you're splitting
+3. **Check the results** - See all the standard tips instantly
+4. **Want to understand the math?** - Tap "Learn Math" on any card
+5. **Need a weird percentage?** - There's a custom tip field for that
+6. **Dark mode** - Tap the sun/moon button when the lights are low
 
-## Project Structure
+## Project structure
 
+Here's what's under the hood:
 ```
 tip-calculator/
 ├── index.html           # Main HTML structure
-├── styles.css           # Styling with dark mode
-├── app.js              # Calculator logic
+├── styles.css           # Styling with dark mode support
+├── app.js              # Calculator logic (the fun part)
 ├── manifest.json       # PWA configuration
-├── service-worker.js   # Offline functionality
+├── service-worker.js   # Offline functionality magic
 ├── icon.svg            # App icon
-└── README.md           # This file
+└── README.md           # You're reading it
 ```
 
-## Technical Details
+## Technical details
 
-- **No dependencies** - Pure HTML, CSS, and JavaScript
-- **Lightweight** - Entire app is < 50KB
-- **Fast** - Instant load and calculation
-- **Accessible** - Semantic HTML and ARIA labels
-- **Responsive** - Works on any screen size
-- **Offline-first** - Service Worker caches all assets
+The nerdy stuff that makes me happy:
 
-## Customization
+- **Zero dependencies** - Just HTML, CSS, and JavaScript. No npm install nightmare.
+- **Tiny footprint** - Entire app is under 50KB (your average Medium article is bigger)
+- **Lightning fast** - Instant load, instant calculations
+- **Actually accessible** - Semantic HTML and ARIA labels where they matter
+- **Responsive** - Works on any screen (tested on my kid's tablet)
+- **Offline-first** - Service Worker caches everything
 
-### Colors
+## Want to customize it?
 
-Edit CSS variables in `styles.css`:
+### Change the colors
 
+Edit the CSS variables in `styles.css`:
 ```css
 :root {
     --accent: #2563eb;  /* Main blue color */
@@ -104,25 +114,26 @@ Edit CSS variables in `styles.css`:
 }
 ```
 
-### Tip Percentages
+### Change the tip percentages
 
 Edit the `standardTips` array in `app.js`:
-
 ```javascript
-const standardTips = [10, 15, 18, 20]; // Change these values
+const standardTips = [10, 15, 18, 20]; // Change to whatever you want
 ```
 
-## Browser Support
+## Browser support
 
-- ✅ Safari (iOS 13+)
-- ✅ Chrome (Android & iOS)
-- ✅ Firefox
-- ✅ Edge
+Works everywhere that matters:
+
+- Safari (iOS 13+)
+- Chrome (Android & iOS)
+- Firefox
+- Edge
 
 ## License
 
-Free to use and modify as you wish!
+Do whatever you want with this. Seriously. Fork it, break it, make it better. Just ship something.
 
 ---
 
-Made with ❤️ for better tipping
+Made for everyone who's ever panicked when the check arrived and their phone showed "No Service"
