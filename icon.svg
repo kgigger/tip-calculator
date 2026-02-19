@@ -1,21 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e40af"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
     </linearGradient>
+    <linearGradient id="card" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="stripe" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#15803d"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="115%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.3"/>
+    </filter>
+    <filter id="badgeShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.35"/>
+    </filter>
   </defs>
-  
-  <!-- Background circle -->
-  <circle cx="100" cy="100" r="90" fill="url(#grad)"/>
-  
-  <!-- Dollar sign -->
-  <path d="M 100 40 L 100 160" stroke="white" stroke-width="12" stroke-linecap="round"/>
-  <path d="M 80 60 Q 75 60 75 70 Q 75 80 85 85 L 115 95 Q 125 100 125 110 Q 125 120 115 120 L 80 120" 
-        fill="none" stroke="white" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-  
-  <!-- Percentage symbol -->
-  <circle cx="135" cy="65" r="8" fill="white"/>
-  <circle cx="145" cy="135" r="8" fill="white"/>
-  <line x1="135" y1="70" x2="145" y2="130" stroke="white" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+
+  <!-- Credit card body -->
+  <g filter="url(#cardShadow)" transform="translate(256, 235) rotate(-8) translate(-256, -235)">
+    <rect x="72" y="145" width="368" height="230" rx="20" fill="url(#card)"/>
+
+    <!-- Magnetic stripe -->
+    <rect x="72" y="195" width="368" height="45" fill="url(#stripe)"/>
+
+    <!-- EMV chip -->
+    <rect x="112" y="165" width="42" height="32" rx="6" fill="#d4a853" opacity="0.9"/>
+    <line x1="133" y1="165" x2="133" y2="197" stroke="#c09630" stroke-width="1.5"/>
+    <line x1="112" y1="181" x2="154" y2="181" stroke="#c09630" stroke-width="1.5"/>
+
+    <!-- Card number dots -->
+    <g fill="#94a3b8">
+      <circle cx="120" cy="270" r="5"/><circle cx="138" cy="270" r="5"/><circle cx="156" cy="270" r="5"/><circle cx="174" cy="270" r="5"/>
+      <circle cx="205" cy="270" r="5"/><circle cx="223" cy="270" r="5"/><circle cx="241" cy="270" r="5"/><circle cx="259" cy="270" r="5"/>
+      <circle cx="290" cy="270" r="5"/><circle cx="308" cy="270" r="5"/><circle cx="326" cy="270" r="5"/><circle cx="344" cy="270" r="5"/>
+    </g>
+    <!-- Last 4 digits -->
+    <text x="375" y="277" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="600" fill="#475569" letter-spacing="3">0000</text>
+
+    <!-- Cardholder line -->
+    <rect x="112" y="310" width="140" height="3" rx="1.5" fill="#cbd5e1"/>
+    <rect x="112" y="320" width="80" height="3" rx="1.5" fill="#cbd5e1"/>
+
+    <!-- Card brand circles -->
+    <circle cx="390" cy="335" r="22" fill="#ef4444" opacity="0.85"/>
+    <circle cx="412" cy="335" r="22" fill="#f97316" opacity="0.75"/>
+  </g>
+
+  <!-- Percentage badge -->
+  <g filter="url(#badgeShadow)">
+    <circle cx="400" cy="115" r="62" fill="url(#badge)"/>
+    <circle cx="400" cy="115" r="58" fill="none" stroke="white" stroke-width="3" opacity="0.3"/>
+    <text x="400" y="133" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="700" fill="white" text-anchor="middle">%</text>
+  </g>
 </svg>

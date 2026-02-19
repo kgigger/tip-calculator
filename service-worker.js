@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tip-calculator-v1';
+const CACHE_NAME = 'tip-calculator-v2';
 const urlsToCache = [
   '/',
   '/index.html',
