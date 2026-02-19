@@ -57,10 +57,6 @@ header {
 h1 {
     font-size: 1.75rem;
     font-weight: 700;
-    color: #1e293b;
-}
-
-[data-theme="dark"] h1 {
     color: var(--text-primary);
 }
 
@@ -146,7 +142,6 @@ input[type="number"]::placeholder {
     opacity: 0.5;
 }
 
-/* Remove spinner arrows */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -354,16 +349,26 @@ footer {
 .result-card:nth-child(4) { animation-delay: 0.2s; }
 .result-card:nth-child(5) { animation-delay: 0.25s; }
 
-/* Responsive adjustments */
+@media (prefers-reduced-motion: reduce) {
+    .results-section {
+        transition: none;
+        opacity: 1;
+        transform: none;
+    }
+    .result-card {
+        animation: none;
+    }
+}
+
 @media (max-width: 480px) {
     .container {
         padding: 0.75rem;
     }
-    
+
     h1 {
         font-size: 1.5rem;
     }
-    
+
     .amounts {
         grid-template-columns: 1fr;
     }

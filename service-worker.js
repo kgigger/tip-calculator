@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tip-calculator-v3';
+const CACHE_NAME = 'tip-calculator-v4';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -7,10 +7,10 @@ const urlsToCache = [
   '/manifest.json',
   '/icon.svg',
   '/icon-180.png',
+  '/icon-192.png',
   '/icon-512.png'
 ];
 
-// Install service worker and cache files
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
@@ -19,28 +19,34 @@ self.addEventListener('install', event => {
   );
 });
 
-// Fetch from cache, fallback to network
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response
-        if (response) {
+    caches.open(CACHE_NAME).then(cache =>
+      cache.match(event.request).then(cached => {
+        const networkFetch = fetch(event.request).then(response => {
+          if (response.ok) {
+            cache.put(event.request, response.clone());
+          }
           return response;
+        });
+
+        if (cached) {
+          networkFetch.catch(() => {});
+          return cached;
         }
-        return fetch(event.request);
-      }
+        return networkFetch;
+      })
     )
   );
 });
 
-// Update service worker and clean old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys()
-      .then(names => Promise.all(
-        names.filter(n => n !== CACHE_NAME).map(n => caches.delete(n))
-      ))
-      .then(() => self.clients.claim())
+    Promise.all([
+      caches.keys().then(names =>
+        Promise.all(names.filter(n => n !== CACHE_NAME).map(n => caches.delete(n)))
+      ),
+      self.clients.claim()
+    ])
   );
 });
