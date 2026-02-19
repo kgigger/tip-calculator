@@ -1,11 +1,13 @@
-const CACHE_NAME = 'tip-calculator-v2';
+const CACHE_NAME = 'tip-calculator-v3';
 const urlsToCache = [
   '/',
   '/index.html',
   '/styles.css',
   '/app.js',
   '/manifest.json',
-  '/icon.svg'
+  '/icon.svg',
+  '/icon-180.png',
+  '/icon-512.png'
 ];
 
 // Install service worker and cache files
