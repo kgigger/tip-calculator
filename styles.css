@@ -44,13 +44,13 @@ body {
     max-width: 600px;
     margin: 0 auto;
     padding: 1rem;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
 header {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
     padding: 1.5rem 0;
 }
 
@@ -58,10 +58,6 @@ h1 {
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--text-primary);
-}
-
-main {
-    flex: 1;
 }
 
 .input-section {
@@ -269,34 +265,22 @@ input[type="number"] {
     color: var(--text-primary);
 }
 
-footer {
-    padding: 1.5rem 0;
-    display: flex;
-    justify-content: center;
-}
-
 .theme-toggle {
+    position: absolute;
+    right: 0;
     background: var(--bg-card);
-    border: 2px solid var(--border);
+    border: 1px solid var(--border);
     border-radius: 2rem;
-    padding: 0.75rem 1.5rem;
-    font-size: 1.25rem;
+    padding: 0.5rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 0 1px 3px var(--shadow);
     touch-action: manipulation;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    line-height: 1;
 }
 
 .theme-toggle:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px var(--shadow);
-}
-
-.theme-toggle:active {
-    transform: translateY(0);
+    background: var(--bg-secondary);
 }
 
 .icon-moon {
