@@ -148,6 +148,65 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
+.more-options-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    cursor: pointer;
+    padding: 0.5rem 0 0.25rem;
+    transition: color 0.2s;
+    touch-action: manipulation;
+}
+
+.more-options-toggle:hover {
+    color: var(--accent);
+}
+
+.more-options-toggle .toggle-text {
+    white-space: nowrap;
+}
+
+.more-options-toggle .chevron {
+    display: inline-block;
+    transition: transform 0.2s;
+}
+
+.more-options-toggle[aria-expanded="true"] .chevron {
+    transform: rotate(90deg);
+}
+
+.options-hint {
+    margin-left: auto;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--accent);
+    text-align: right;
+}
+
+.more-options {
+    margin-top: 1.25rem;
+}
+
+.more-options[hidden] {
+    display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .more-options-toggle .chevron {
+        transition: none;
+    }
+}
+
 .results-section {
     opacity: 0;
     transform: translateY(10px);

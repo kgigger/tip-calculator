@@ -9,6 +9,10 @@ if ('serviceWorker' in navigator) {
 const billAmount = document.getElementById('billAmount');
 const numPeople = document.getElementById('numPeople');
 const customTip = document.getElementById('customTip');
+const taxFees = document.getElementById('taxFees');
+const moreOptions = document.getElementById('moreOptions');
+const moreOptionsToggle = document.getElementById('moreOptionsToggle');
+const optionsHint = document.getElementById('optionsHint');
 const resultsSection = document.getElementById('results');
 const resultsGrid = document.querySelector('.results-grid');
 const toggleDark = document.getElementById('toggleDark');
@@ -23,12 +27,46 @@ toggleDark.addEventListener('click', () => {
     localStorage.setItem('theme', newTheme);
 });
 
-const standardTips = [10, 15, 18, 20];
+let optionsOpen = localStorage.getItem('moreOptionsOpen') === 'true';
+
+function applyOptionsState() {
+    moreOptions.hidden = !optionsOpen;
+    moreOptionsToggle.setAttribute('aria-expanded', optionsOpen);
+    moreOptionsToggle.querySelector('.toggle-text').textContent = optionsOpen ? 'Fewer options' : 'More options';
+    updateOptionsHint();
+}
+
+function updateOptionsHint() {
+    const people = Math.max(1, parseInt(numPeople.value) || 1);
+    const custom = parseFloat(customTip.value);
+    const fees = parseFloat(taxFees.value) || 0;
+
+    const parts = [];
+    if (people > 1) parts.push(`${people} people`);
+    if (!isNaN(custom) && custom > 0 && custom <= 100) parts.push(`${custom}% custom`);
+    if (fees > 0) parts.push(`$${fees.toFixed(2)} tax/fees`);
+
+    optionsHint.textContent = parts.join(' · ');
+    optionsHint.hidden = optionsOpen || parts.length === 0;
+}
+
+moreOptionsToggle.addEventListener('click', () => {
+    optionsOpen = !optionsOpen;
+    localStorage.setItem('moreOptionsOpen', optionsOpen);
+    applyOptionsState();
+});
+
+applyOptionsState();
+
+const standardTips = [15, 18, 20];
 
 function calculateTips() {
     const bill = parseFloat(billAmount.value) || 0;
     const people = Math.max(1, parseInt(numPeople.value) || 1);
     const custom = parseFloat(customTip.value);
+    const fees = Math.min(Math.max(0, parseFloat(taxFees.value) || 0), bill);
+
+    updateOptionsHint();
 
     if (bill <= 0) {
         resultsGrid.innerHTML = `
@@ -46,11 +84,11 @@ function calculateTips() {
     const results = [];
 
     if (!isNaN(custom) && custom > 0 && custom <= 100) {
-        results.push(createTipResult(bill, people, custom, true));
+        results.push(createTipResult(bill, fees, people, custom, true));
     }
 
     standardTips.forEach(percent => {
-        results.push(createTipResult(bill, people, percent));
+        results.push(createTipResult(bill, fees, people, percent));
     });
 
     resultsGrid.innerHTML = results.join('');
@@ -68,8 +106,9 @@ function calculateTips() {
     });
 }
 
-function createTipResult(bill, people, percent, isCustom = false) {
-    const tipAmount = bill * (percent / 100);
+function createTipResult(bill, fees, people, percent, isCustom = false) {
+    const tipBase = bill - fees;
+    const tipAmount = tipBase * (percent / 100);
     const total = bill + tipAmount;
     const perPerson = total / people;
 
@@ -77,7 +116,7 @@ function createTipResult(bill, people, percent, isCustom = false) {
     const customClass = isCustom ? 'custom' : '';
     const customLabel = isCustom ? 'custom' : '';
     const breakdownId = `breakdown-${isCustom ? 'custom-' : ''}${percent}`;
-    const mathBreakdown = generateMathBreakdown(bill, percent, tipAmount, total, people, perPerson);
+    const mathBreakdown = generateMathBreakdown(bill, fees, percent, tipAmount, total, people, perPerson);
 
     return `
         <div class="result-card ${customClass}">
@@ -103,29 +142,34 @@ function createTipResult(bill, people, percent, isCustom = false) {
     `;
 }
 
-function generateMathBreakdown(bill, percent, tipAmount, total, people, perPerson) {
+function generateMathBreakdown(bill, fees, percent, tipAmount, total, people, perPerson) {
+    const tipBase = bill - fees;
     let steps = [];
+    let stepNum = 1;
 
-    steps.push(`<div class="math-step"><strong>Step 1:</strong> Calculate ${percent}% tip</div>`);
-    steps.push(`<div class="math-step">$${bill.toFixed(2)} × ${percent / 100} = <strong>$${tipAmount.toFixed(2)}</strong></div>`);
+    if (fees > 0) {
+        steps.push(`<div class="math-step"><strong>Step ${stepNum++}:</strong> Remove tax &amp; fees before tipping</div>`);
+        steps.push(`<div class="math-step">$${bill.toFixed(2)} − $${fees.toFixed(2)} = <strong>$${tipBase.toFixed(2)}</strong></div>`);
+    }
 
-    if (percent === 10) {
-        steps.push(`<div class="math-step">Quick tip: Move decimal left one place</div>`);
-    } else if (percent === 15) {
-        const ten = bill * 0.10;
+    steps.push(`<div class="math-step"><strong>Step ${stepNum++}:</strong> Calculate ${percent}% tip${fees > 0 ? ' on the pre-tax amount' : ''}</div>`);
+    steps.push(`<div class="math-step">$${tipBase.toFixed(2)} × ${percent / 100} = <strong>$${tipAmount.toFixed(2)}</strong></div>`);
+
+    if (percent === 15) {
+        const ten = tipBase * 0.10;
         const five = ten / 2;
         steps.push(`<div class="math-step">Quick tip: 10% = $${ten.toFixed(2)}, half of that = $${five.toFixed(2)}</div>`);
         steps.push(`<div class="math-step">Add them: $${ten.toFixed(2)} + $${five.toFixed(2)} = $${(ten + five).toFixed(2)}</div>`);
     } else if (percent === 20) {
-        const ten = bill * 0.10;
+        const ten = tipBase * 0.10;
         steps.push(`<div class="math-step">Quick tip: Double 10% ($${ten.toFixed(2)} × 2)</div>`);
     }
 
-    steps.push(`<div class="math-step"><strong>Step 2:</strong> Add tip to bill</div>`);
+    steps.push(`<div class="math-step"><strong>Step ${stepNum++}:</strong> Add tip to the full bill</div>`);
     steps.push(`<div class="math-step">$${bill.toFixed(2)} + $${tipAmount.toFixed(2)} = <strong>$${total.toFixed(2)}</strong></div>`);
 
     if (people > 1) {
-        steps.push(`<div class="math-step"><strong>Step 3:</strong> Split between ${people} people</div>`);
+        steps.push(`<div class="math-step"><strong>Step ${stepNum++}:</strong> Split between ${people} people</div>`);
         steps.push(`<div class="math-step">$${total.toFixed(2)} ÷ ${people} = <strong>$${perPerson.toFixed(2)} per person</strong></div>`);
     }
 
@@ -135,6 +179,7 @@ function generateMathBreakdown(bill, percent, tipAmount, total, people, perPerso
 billAmount.addEventListener('input', calculateTips);
 numPeople.addEventListener('input', calculateTips);
 customTip.addEventListener('input', calculateTips);
+taxFees.addEventListener('input', calculateTips);
 
 calculateTips();
 
